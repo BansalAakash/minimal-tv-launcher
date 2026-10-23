@@ -24,13 +24,17 @@ base = ip.rsplit(".", 1)[0]
 
 def open_port(host, port=5555):
     try:
-        with socket.create_connection((host, port), timeout=0.8):
+        with socket.create_connection((host, port), timeout=1.5):
             return host
     except OSError:
         return None
 
-with ThreadPoolExecutor(max_workers=128) as ex:
-    found = [h for h in ex.map(open_port, [f"{base}.{i}" for i in range(1, 255)]) if h and h != ip]
+found = []
+for attempt in range(2):                     # a sleeping device's Wi-Fi can miss the first knock
+    with ThreadPoolExecutor(max_workers=128) as ex:
+        found = [h for h in ex.map(open_port, [f"{base}.{i}" for i in range(1, 255)]) if h and h != ip]
+    if found:
+        break
 for h in found:
     print(h)
 if not found:
