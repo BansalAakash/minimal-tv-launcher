@@ -1,6 +1,6 @@
-# Room Home
+# Minimal TV Launcher
 
-A calm, custom home screen for Android TV. Six big app tiles, a floor lamp, and a sky that follows the real sun and moon in India. When the lamp is on, a little spider drops down to switch it off.
+A calm, custom home screen for Android TV (the app on the TV is called **Room Home**). Six big app tiles, a floor lamp, and a sky that follows the real sun and moon in India. When the lamp is on, a little spider drops down to switch it off.
 
 ![The lamp animation: the spider lowers itself on a thread, tugs the lamp's pull cord, and the room goes dark. Then again, and the lamp comes back on.](docs/lamp-animation.gif)
 
@@ -32,7 +32,7 @@ Built for a Xiaomi Mi TV (MediaTek, 1.8 GB RAM, Android 14) and made to be light
 
 Setting this up involves a few ADB commands. You can hand the whole job to any AI assistant that can run commands on your computer. Paste this:
 
-> Set up Room Home on my Android TV. First read https://raw.githubusercontent.com/BansalAakash/room-home/main/AGENTS.md and follow it. Ask me for the TV's IP address when you need it.
+> Set up Minimal TV Launcher (Room Home) on my Android TV. First read https://raw.githubusercontent.com/BansalAakash/minimal-tv-launcher/main/AGENTS.md and follow it. Ask me for the TV's IP address when you need it.
 
 Everything the assistant needs (prerequisites, exact commands, how to check each step worked, how to change the city or the apps, how to undo it) is in [`AGENTS.md`](AGENTS.md). There is also a short [`llms.txt`](llms.txt).
 

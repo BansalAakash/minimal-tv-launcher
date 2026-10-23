@@ -1,4 +1,4 @@
-# Room Home
+# Minimal TV Launcher (Room Home)
 
 > A custom Android TV home screen (launcher) with a lamp, a sun and moon on India time, and PS5 wake handling.
 
