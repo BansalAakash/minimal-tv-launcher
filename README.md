@@ -32,24 +32,26 @@ Built for a Xiaomi Mi TV (MediaTek, 1.8 GB RAM, Android 14) and made to be light
 
 Setting this up involves a few ADB commands. You can hand the whole job to any AI assistant that can run commands on your computer. Paste this:
 
-> Set up Minimal TV Launcher (Room Home) on my Android TV. First read https://raw.githubusercontent.com/BansalAakash/minimal-tv-launcher/main/AGENTS.md and follow it. Ask me for the TV's IP address when you need it.
+> Set up Minimal TV Launcher (Room Home) on my Android TV. First read https://raw.githubusercontent.com/BansalAakash/minimal-tv-launcher/main/AGENTS.md and follow it.
 
-Everything the assistant needs (prerequisites, exact commands, how to check each step worked, how to change the city or the apps, how to undo it) is in [`AGENTS.md`](AGENTS.md). There is also a short [`llms.txt`](llms.txt).
+Your computer and the TV just need to be on the same Wi-Fi: the assistant finds the TV by itself. Everything it needs (prerequisites, exact commands, how to check each step worked, how to change the city or the apps, how to undo it) is in [`AGENTS.md`](AGENTS.md). There is also a short [`llms.txt`](llms.txt).
 
 ## Install yourself
 
-1. On the TV: **Settings > Device Preferences > About**, tap **Build** seven times, then **Developer options** and turn on **USB debugging**. Note the TV's IP address (**Settings > Network**).
+1. On the TV: **Settings > Device Preferences > About**, tap **Build** seven times, then **Developer options** and turn on **USB debugging**.
 2. On your computer, install [Android platform-tools](https://developer.android.com/tools/releases/platform-tools) (for `adb`).
 3. Download `room-home.apk` from the [Releases](../../releases) page, then:
 
    ```bash
-   scripts/install.sh <tv-ip> room-home.apk
+   scripts/install.sh room-home.apk
    ```
+
+   It finds the TV on your Wi-Fi by itself (or pass its IP address first).
 
    Accept the "Allow USB debugging?" prompt on the TV the first time.
 4. Press **Home** on the remote. You land on Room Home.
 
-To go back to the stock home screen: `scripts/uninstall.sh <tv-ip>`.
+To go back to the stock home screen: `scripts/uninstall.sh`.
 
 ## Make it yours
 

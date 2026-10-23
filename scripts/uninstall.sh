@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Removes Room Home and restores the HDMI-CEC defaults. Usage: scripts/uninstall.sh <tv-ip>
+# Removes Room Home and restores the HDMI-CEC defaults. Usage: scripts/uninstall.sh [tv-ip]
 set -euo pipefail
-TV="${1:?Usage: $0 <tv-ip>}"
+HERE="$(cd "$(dirname "$0")" && pwd)"
+TV="${1:-$("$HERE/find-tv.sh" | head -n1)}"
 A() { adb -s "$TV:5555" "$@"; }
 adb connect "$TV:5555" >/dev/null
 A shell settings put secure enabled_accessibility_services ''

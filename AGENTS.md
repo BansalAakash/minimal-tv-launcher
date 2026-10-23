@@ -1,6 +1,6 @@
 # Room Home: instructions for AI assistants
 
-Read this first. It is written so you can set up, change and debug this project for a user who may know nothing about it. Follow it step by step, run the verification command after each step, and only ask the user for what you cannot find yourself (marked **ASK**).
+Read this first. It is written so you can set up, change and debug this project for a user who may know nothing about it. Follow it step by step, run the verification command after each step, and only ask the user for what you cannot find or do yourself (marked **ASK**).
 
 ## What this is
 
@@ -11,16 +11,16 @@ The user wants it on their own TV. They should not have to understand ADB. You d
 ## Prerequisites (check, install if missing)
 
 1. A computer on the same Wi-Fi as the TV, with `adb` on PATH. Check: `adb version`. If missing, install Android platform-tools: https://developer.android.com/tools/releases/platform-tools
-2. **ASK** the user for the TV's IP address (TV: Settings > Network).
+2. **Find the TV yourself.** The computer and the TV are on the same Wi-Fi, so run `scripts/find-tv.sh`: it scans the local network and prints the address of every device with ADB turned on (the TV, once step 3 is done). One address: that is the TV. Several: `adb connect <ip>:5555` and check `adb -s <ip>:5555 shell getprop ro.build.characteristics` contains `tv`. Only **ASK** the user for the address if nothing is found after they have done step 3.
 3. The user turns on ADB on the TV: Settings > Device Preferences > About, tap **Build** 7 times, then Developer options > **USB debugging** on. They must accept the "Allow USB debugging?" prompt on the TV the first time. Tell them exactly this; you cannot do it for them.
 4. An APK: either download `room-home.apk` from the repository's Releases page, or build it (see "Build" below).
 
 ## Install
 
-Preferred: run the script.
+Preferred: run the script. With no address it finds the TV by itself.
 
 ```bash
-scripts/install.sh <tv-ip> room-home.apk
+scripts/install.sh room-home.apk          # or: scripts/install.sh <tv-ip> room-home.apk
 ```
 
 What it does, in case you need to do it by hand (all via `adb -s <tv-ip>:5555`):
@@ -39,7 +39,7 @@ adb -s <tv-ip>:5555 shell am start -n com.roomremote.launcher/.MainActivity
 
 **Verify:** `adb -s <tv-ip>:5555 shell dumpsys activity activities | grep topResumedActivity` should show `com.roomremote.launcher/.MainActivity`, and `adb -s <tv-ip>:5555 shell dumpsys accessibility | grep -c "roomremote.launcher"` should print `1` or more. Then ask the user to press Home on the remote: they should land on Room Home.
 
-**Undo:** `scripts/uninstall.sh <tv-ip>` (or: clear `enabled_accessibility_services`, restore the three CEC settings to `0`, `0`, `standby_now`, and `adb uninstall com.roomremote.launcher`).
+**Undo:** `scripts/uninstall.sh` (or: clear `enabled_accessibility_services`, restore the three CEC settings to `0`, `0`, `standby_now`, and `adb uninstall com.roomremote.launcher`).
 
 ## Build
 
@@ -55,7 +55,7 @@ If the SDK is somewhere else, edit the `SDK=` line at the top of `build.sh`.
 
 | What | Where | Notes |
 |---|---|---|
-| City for sunrise/sunset | `LAT`, `LON` in `src/com/roomremote/launcher/MainActivity.java` | **ASK** which city. Default is Bengaluru (12.97, 77.59). Times use India time (Asia/Kolkata). |
+| City for sunrise/sunset | `LAT`, `LON` in `src/com/roomremote/launcher/MainActivity.java` | Optional, ask once at the end: "Which city are you in?" The default is Bengaluru (12.97, 77.59), close enough for most of India. Times use India time (Asia/Kolkata). |
 | Default apps | `APPS` in `MainActivity.java` | Package names. The user can also use the + / - button on the TV. PlayStation uses the token `PS`. |
 | Greetings | `GREETINGS` in `MainActivity.java` | No names: more than one person uses the TV. |
 | Console wake (HDMI input ids) | `PS5_PORT`, `PS5_CEC` in `HomeWatcher.java` | See below. |
