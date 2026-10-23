@@ -32,13 +32,16 @@ public class HomeWatcher extends AccessibilityService {
     /** Log to logcat and to a file on shared storage. */
     static void note(String m) { if (self != null) self.write(m); }
 
-    private void write(String m) {
+    private void write(String m) { logTo(this, m); }
+
+    /** Append a timestamped line to the log file (also to logcat). Usable from any component of the app. */
+    static void logTo(android.content.Context c, String m) {
         Log.i(TAG, m);
         try {
-            java.io.File dir = getExternalFilesDir(null);
+            java.io.File dir = c.getExternalFilesDir(null);
             if (dir == null) return;
             java.io.FileWriter w = new java.io.FileWriter(new java.io.File(dir, "watch.log"), true);
-            w.write(new java.text.SimpleDateFormat("HH:mm:ss.SSS", java.util.Locale.ENGLISH).format(new java.util.Date()) + " " + m + "\n");
+            w.write(new java.text.SimpleDateFormat("MM-dd HH:mm:ss.SSS", java.util.Locale.ENGLISH).format(new java.util.Date()) + " " + m + "\n");
             w.close();
         } catch (Exception ignored) { }
     }
@@ -124,10 +127,16 @@ public class HomeWatcher extends AccessibilityService {
         }
     }
 
-    @Override public void onInterrupt() {}
+    @Override public void onInterrupt() { logTo(this, "watcher interrupted by Android"); }
+
+    @Override public boolean onUnbind(Intent intent) {
+        logTo(this, "Android disconnected the watcher (onUnbind), pid " + android.os.Process.myPid());
+        return super.onUnbind(intent);
+    }
 
     @Override
     public void onDestroy() {
+        logTo(this, "watcher destroyed");
         if (self == this) self = null;
         if (tim != null && callback != null) tim.unregisterCallback(callback);
         super.onDestroy();

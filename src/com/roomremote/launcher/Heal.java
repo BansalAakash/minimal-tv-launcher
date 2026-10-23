@@ -37,6 +37,7 @@ final class Heal {
             String cur = Settings.Secure.getString(cr, "enabled_accessibility_services");
             boolean listed = cur != null && cur.contains(me);
             if (listed && bound(c)) return;
+            HomeWatcher.logTo(c, listed ? "heal: listed as enabled but not connected, reconnecting" : "heal: not in the enabled list, adding it back");
             String others = "";
             if (cur != null) for (String s : cur.split(":")) if (!s.isEmpty() && !s.equals(me)) others += (others.isEmpty() ? "" : ":") + s;
             if (listed) {   // listed but not connected ("crashed"): switch it off and on so Android binds it again
