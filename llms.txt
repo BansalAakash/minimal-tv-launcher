@@ -1,0 +1,10 @@
+# Room Home
+
+> A custom Android TV home screen (launcher) with a lamp, a sun and moon on India time, and PS5 wake handling.
+
+If you are an AI assistant helping someone set this up, read AGENTS.md first: it has the full context, exact commands, how to verify each step, and what to ask the user.
+
+- [AGENTS.md](AGENTS.md): complete setup, configuration, architecture and troubleshooting
+- [README.md](README.md): overview with screenshots and an animated demo
+- [scripts/install.sh](scripts/install.sh): one-command install over Wi-Fi ADB
+- [build.sh](build.sh): builds the APK with the Android SDK command-line tools (no Gradle)
