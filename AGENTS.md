@@ -76,7 +76,7 @@ Look for ids like `com.<vendor>.tis/.HdmiInputService/HW4` (a physical port) and
 ## How it works (so you can change it safely)
 
 - `MainActivity.java`: the screen: tiles, clock and greeting, lamp, cord, sun/moon, daily mood, app editor, the spider animation (`pullCord`).
-- `HomeWatcher.java`: an accessibility service that (1) sends the user back to Room Home when something opens the stock home screen, and (2) watches HDMI input state to open the console's screen when it wakes, and return home when it sleeps. `Heal.java` and `BootReceiver.java` keep that service enabled across reboots and force-stops.
+- `HomeWatcher.java`: an accessibility service that (1) sends the user back to Room Home when something opens the stock home screen, and (2) watches HDMI input state to open the console's screen when it wakes, and return home when it sleeps. `Heal.java`, `HealReceiver.java` and `BootReceiver.java` keep that service enabled and actually connected: at boot, at app start, and from an alarm every ~2 minutes even when the launcher is not on screen. (Android can mark an accessibility service "crashed": still listed as enabled but not connected. `Heal.bound()` checks the real connection, and `Heal.ensure()` switches the service off and on to reconnect it.)
 - `PsActivity.java`: shows the console's HDMI input full screen (a `TvView`).
 - `Solar.java`, `SunView.java`, `SunLight.java`, `MoonView.java`: the sky. `Backdrop.java`, `DotGrid.java`, `Mood.java`: background. `LampView.java`, `CordView.java`, `SpiderView.java`, `SilkView.java`: the lamp scene.
 - Day/night rule: between sunrise and sunset there is no lamp, no cord and no dim mode (always light). At night the lamp is shown and the cord toggles light/dim (saved in preference `dim`).
@@ -109,7 +109,7 @@ Undo: set the two scales back to `1.0` and run `device_config delete activity_ma
 | Symptom | Cause and fix |
 |---|---|
 | `scripts/install.sh` cannot reach the TV | ADB is off, wrong IP, or the prompt on the TV was not accepted. Re-do the prerequisites. The TV may also be asleep: wake it first. |
-| Home key opens the stock home screen | The accessibility service is off. Re-run the install script; check `dumpsys accessibility`. |
+| Home key or a fresh TV start shows the stock home screen | The accessibility service is off or "crashed". It reconnects itself within about two minutes; to do it now, re-run `scripts/install.sh`, or check `adb shell dumpsys accessibility | grep -E "Bound|Crashed"`. |
 | Console wakes but the TV does not switch | The console's HDMI Device Link / One-Touch Play is off, or `PS5_PORT`/`PS5_CEC` do not match this TV. |
 | `adb` commands time out | Some TVs are slow when memory is tight. Retry with a longer timeout; avoid piling up commands. |
 | The sun or lamp is at the wrong hour | Wrong `LAT`/`LON`, or a leftover test override: run the `--ei sun -1` command above. |

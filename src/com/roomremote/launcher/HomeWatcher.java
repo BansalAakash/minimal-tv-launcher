@@ -47,6 +47,7 @@ public class HomeWatcher extends AccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
         self = this;
+        Heal.schedule(getApplicationContext());
         tim = (TvInputManager) getSystemService(TV_INPUT_SERVICE);
         last = tim.getInputState(PS5_CEC);
         lastPort = tim.getInputState(PS5_PORT);

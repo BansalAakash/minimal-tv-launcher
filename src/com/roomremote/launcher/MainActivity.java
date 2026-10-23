@@ -116,6 +116,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle b) {
         super.onCreate(b);
         dim = wantDim();
+        Heal.schedule(this);
         root = new FrameLayout(this);
         root.setClipChildren(false);
         backdrop = new Backdrop(this);

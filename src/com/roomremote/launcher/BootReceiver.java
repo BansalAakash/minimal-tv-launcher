@@ -6,5 +6,5 @@ import android.content.Intent;
 
 /** After a restart or an app update, make sure the Home-key watcher is on. */
 public class BootReceiver extends BroadcastReceiver {
-    @Override public void onReceive(Context c, Intent i) { Heal.ensure(c); }
+    @Override public void onReceive(Context c, Intent i) { Heal.ensure(c); Heal.schedule(c); }
 }
